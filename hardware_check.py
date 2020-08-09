@@ -3,6 +3,10 @@ import sys
 import subprocess
 import re
 
+"""Below function uses a basic shell command to extract the cpu stats.
+The shell command uses pf and pipes it to an awk command.
+Based on the computed percentage, It prompts the user on the status."""
+
 def cpu_usage():
     dir=os.popen("bash cpu_usage.sh").readline()
     cpu_percent=float(dir[:len(dir)-2])
@@ -13,6 +17,11 @@ def cpu_usage():
         print("Your cpu is at normal usage")
         print("Moving on to next check")
         return 0
+
+"""The below function is divided into two halves.
+The first half utilisese subprocess to obtain the stats of the ram usage on a MacOS machine.
+The Second half utilises the shell command free to obtain stats of a linux machine.
+It finally gives an output based on the percentage of ram used."""
 
 def memory_usage():
 
@@ -31,8 +40,6 @@ def memory_usage():
 
         stats["total_ram"]=int(matcher.search(total_ram).group())/1024**3
         stats["used_ram"]=round(wired_memory+active_memory+inactive_memory, 2)
-        
-
     else:
         df_output_lines = [s.split() for s in os.popen("bash memory_check.sh").read().splitlines()]
         ram_details=df_output_lines[0]
@@ -49,13 +56,16 @@ def memory_usage():
         print("Moving on to next check")
         return 0
 
+"""The below method checks for the disk space occupied on a system. 
+It runs different shell commands for the two different os's owing to the different names of the drives.
+The percentage is computed and tested"""
+
 def disk_space_check():
 
     dict_rec={}
 
     if sys.platform=="darwin":
         df_output_lines = [s.split() for s in os.popen("bash disk-space-macos.sh").read().splitlines()]
-
     else:
         df_output_lines = [s.split() for s in os.popen("bash disk-space-linux.sh").read().splitlines()]
 

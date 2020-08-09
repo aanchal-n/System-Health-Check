@@ -1,6 +1,8 @@
 import os
 import sys
 
+"""It runs a MacOS terminal comman to check for software. 
+If updates are found, it prompts the user as to whether they want to install said updates manually or the code could install it for them""" 
 def darwin_update():
 
     df_output_lines = [s.split() for s in os.popen("softwareupdate -l").read().splitlines()]
@@ -18,7 +20,9 @@ def darwin_update():
             return 0
         else:
             return 1
-    
+
+"""The below code does the same as above but on a linux machine. 
+Here we use sudo get-apt upgrade to check for updates and if available lets the user update the necessary software."""
 def linux_update():
 
     df_output_lines = [s.split() for s in os.popen("bash software-update-linux.sh").read().splitlines()]
