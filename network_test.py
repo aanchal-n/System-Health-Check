@@ -4,9 +4,8 @@ import sys
 def ping_check():
     df_output_lines = [s.split() for s in os.popen("bash ping-test.sh").read().splitlines()]
     main_list=df_output_lines[0]
-    print(main_list)
     for i in range(0,len(main_list)):
-        if main_list[i+1].lower()=="packet" and main_list[i+2].lower()=="loss":
+        if main_list[i+1].lower()=="packet" or main_list[i+2].lower()=="loss":
             dummy=main_list[i]
 
             if sys.platform=="darwin":
@@ -30,4 +29,3 @@ def ping_check():
                     return 1
             break
 
-ping_check()
