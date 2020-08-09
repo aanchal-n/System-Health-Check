@@ -34,7 +34,7 @@ def memory_usage():
         
 
     else:
-        df_output_lines = [s.split() for s in os.popen("bash disk-space-macos.sh").read().splitlines()]
+        df_output_lines = [s.split() for s in os.popen("memory_check.sh").read().splitlines()]
         ram_details=df_output_lines[0]
 
         stats["total_ram"]=int(ram_details[1])
