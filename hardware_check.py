@@ -17,21 +17,30 @@ def cpu_usage():
 def memory_usage():
 
     stats={}
-    matcher = re.compile('\d+')
+    if sys.platform=="darwin":
+        matcher = re.compile('\d+')
 
-    total_ram = subprocess.run(['sysctl', 'hw.memsize'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    vm = subprocess.Popen(['vm_stat'], stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
-    vmLines = vm.split('\n')
+        total_ram = subprocess.run(['sysctl', 'hw.memsize'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+        vm = subprocess.Popen(['vm_stat'], stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
+        vmLines = vm.split('\n')
 
-    wired_memory = (int(matcher.search(vmLines[6]).group()) * 4096) / 1024 ** 3
-    free_memory = (int(matcher.search(vmLines[1]).group()) * 4096) / 1024 ** 3
-    active_memory = (int(matcher.search(vmLines[2]).group()) * 4096) / 1024 ** 3
-    inactive_memory = (int(matcher.search(vmLines[3]).group()) * 4096) / 1024 ** 3
+        wired_memory = (int(matcher.search(vmLines[6]).group()) * 4096) / 1024 ** 3
+        free_memory = (int(matcher.search(vmLines[1]).group()) * 4096) / 1024 ** 3
+        active_memory = (int(matcher.search(vmLines[2]).group()) * 4096) / 1024 ** 3
+        inactive_memory = (int(matcher.search(vmLines[3]).group()) * 4096) / 1024 ** 3
 
-    stats["total_ram"]=int(matcher.search(total_ram).group())/1024**3
-    stats["used_ram"]=round(wired_memory+active_memory+inactive_memory, 2)
-    ram_percent=(stats["used_ram"]/stats["total_ram"]*100)
+        stats["total_ram"]=int(matcher.search(total_ram).group())/1024**3
+        stats["used_ram"]=round(wired_memory+active_memory+inactive_memory, 2)
+        
 
+    else:
+        df_output_lines = [s.split() for s in os.popen("bash disk-space-macos.sh").read().splitlines()]
+        ram_details=df_output_lines[0]
+
+        stats["total_ram"]=int(ram_details[1])
+        stats["used_ram"]=int(ram_details[2])
+
+    ram_percent=(stats["used_ram"]/stats["total_ram"]*100) 
     if ram_percent>=95.0:
         print("Your ram consumption is high. Close applications")
         return 1
