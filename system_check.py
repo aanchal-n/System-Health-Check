@@ -4,7 +4,7 @@ import hardware_check
 import network_test
 import software_update_check
 import system_info
-import summary
+#import summary
 
 print("*"*40,"This is a basic system health check", "*"*40)
 print("\n")
