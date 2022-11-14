@@ -14,7 +14,7 @@ def darwin_update():
     else:
         print("Updates Available")
         print("Enter Y for automatic updation")
-        str_in=input()
+        str_in="y"
         if str_in.lower()=="y":
             os.system("softwareupdate -a")  
             return 0
