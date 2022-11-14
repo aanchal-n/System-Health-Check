@@ -69,9 +69,9 @@ def disk_space_check():
     else:
         df_output_lines = [s.split() for s in os.popen("bash disk-space-linux.sh").read().splitlines()]
 
-    dict_rec["total_space"]=int(df_output_lines[0][1][:-2])
-    dict_rec["used_space"]=int(df_output_lines[0][2][:-2])
-    dict_rec["available_space"]=int(df_output_lines[0][3][:-2])
+    dict_rec["total_space"]=float(df_output_lines[0][1][:-2])
+    dict_rec["used_space"]=float(df_output_lines[0][2][:-2])
+    dict_rec["available_space"]=float(df_output_lines[0][3][:-2])
     dict_rec["percent_free"]=round((dict_rec["available_space"]/dict_rec["total_space"])*100,2)
     
     if dict_rec["percent_free"]<=5.0:
