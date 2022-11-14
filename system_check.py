@@ -36,4 +36,4 @@ dict_details["network check"]=network_test.ping_check()
 
 print("*"*40,"FINAL DIAGNOSTIC REPORT","*"*40)
 print(dict_details)
-print("System Health Check Completed")
+#print("System Health Check Completed")
