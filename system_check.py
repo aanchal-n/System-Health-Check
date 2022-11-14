@@ -35,4 +35,4 @@ print("\n NETWORK CHECK")
 dict_details["network check"]=network_test.ping_check()
 
 print("*"*40,"FINAL DIAGNOSTIC","*"*40)
-summary.summary_df(dict_details)
+print(dict_details)
